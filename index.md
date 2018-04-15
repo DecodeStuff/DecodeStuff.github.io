@@ -1,22 +1,71 @@
 <html>
-<head>
+  <head>
 <link rel="stylesheet" href="format.css">
-<title>Josh's Vr Website</title>
-<style type="text/css">
+    <meta charset="utf-8">
+    <title>360&deg; Image Gallery</title>
+    <meta name="description" content="360&deg; Image Gallery - A-Frame">
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://npmcdn.com/aframe-animation-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-event-set-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-layout-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-template-component@3.1.1"></script>
+    <script src="components.js"></script>
+  </head>
+  <body>
 
-</head>
-<body>
-</style>
+    <a-scene>
+      <a-assets>
+        <img id="city" crossorigin="anonymous" src="https://ucarecdn.com/525f2212-44c7-4357-93be-87d3a9dc206b/">
+        
+        <img id="city-thumb" crossorigin="anonymous" src="https://ucarecdn.com/4b71363e-9c41-42f7-9212-ff06ba262363/">
+        
+       <img id="sechelt" crossorigin="anonymous" src="https://ucarecdn.com/f69ed221-d28c-43f6-ad43-969814ba11e3/">
+        
+        <img id="sechelt-thumb" crossorigin="anonymous" src="https://ucarecdn.com/854d798d-9c42-4f17-8a58-d3f78401b8aa/">
+        
+        <audio id="click-sound" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio>
+        <img id="cubes" crossorigin="anonymous" src="https://ucarecdn.com/94a0aa0b-0b71-485f-9385-4fbbc9a360dd/"> 
+        
+        <img id="cubes-thumb" crossorigin="anonymous" src="https://ucarecdn.com/812569e2-0f32-4ac8-a525-51729ae1b41d/">
+       
+        <!-- Image link template to be reused. -->
+        <script id="link" type="text/html">
+          <a-entity class="link"
+            geometry="primitive: plane; height: 1; width: 1"
+            material="shader: flat; src: ${thumb}"
+            event-set__1="_event: mousedown; scale: 1 1 1"
+            event-set__2="_event: mouseup; scale: 1.2 1.2 1"
+            event-set__3="_event: mouseenter; scale: 1.2 1.2 1"
+            event-set__4="_event: mouseleave; scale: 1 1 1"
+            set-image="on: click; target: #image-360; src: ${src}"
+            sound="on: click; src: #click-sound"></a-entity>
+        </script>
+      </a-assets>
+      
+      
 
+      <!-- 360-degree image. -->
+      <a-sky id="image-360" radius="10" src="#city"></a-sky>
 
+      <!-- Image links. -->
+      <a-entity id="links" layout="type: line; margin: 1.5" position="0 -.5 -4">
+        <a-entity template="src: #link" data-src="#cubes" data-thumb="#cubes-thumb"></a-entity>
+        <a-entity template="src: #link" data-src="#city" data-thumb="#city-thumb"></a-entity>
+        <a-entity template="src: #link" data-src="#sechelt" data-thumb="#sechelt-thumb"></a-entity>
+      </a-entity>
+      
+      
 
-<h1 align = "center">Josh's VR Website</h1>
-<br><br>
-<p align = "center">Click The links to open the 360 Environment</p>
-
-
-<li align = "center"><a href="East Entrance.html">East Entrance</a></li>
-<li align = "center"><a href="West Entrance.html">West Entrance</a></li>
-<li align = "center"><a href="TACOS.html">Tacos</a></li>
-
-
+    <!-- Camera + cursor. -->
+      <a-entity camera look-controls>
+        <a-cursor id="cursor"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+          animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+          event-set__1="_event: mouseenter; color: springgreen"
+          event-set__2="_event: mouseleave; color: black"
+          fuse="true"
+          raycaster="objects: .link"></a-cursor>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
